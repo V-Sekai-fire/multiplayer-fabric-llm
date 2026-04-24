@@ -229,9 +229,9 @@ $(GGML_CPU_CXX_OBJ): $(TP)/ggml/src/ggml-cpu/ggml-cpu.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 ifeq ($(IS_MACOS), Darwin)
-# Metal shader embed: cat shader sources into a C char array
+# Metal shader embed — Elixir Mix task generates the C char array
 $(METAL_EMBED_GEN): $(METAL_DIR)/ggml-metal.metal $(TP)/ggml/src/ggml-common.h $(METAL_DIR)/ggml-metal-impl.h
-	python3 c_src/gen_metal_embed.py $@ $^
+	mix gen_metal_embed OUTPUT=$@ METAL=$(METAL_DIR)/ggml-metal.metal
 
 # Collision: ggml-metal-device.cpp → unique object
 $(METAL_DEVICE_CPP_OBJ): $(METAL_DIR)/ggml-metal-device.cpp
